@@ -5,7 +5,7 @@ param(
 #---Variables [General]
 $Info = {
 <*************************************************************************************************************************
-*  Synopsis: Install Bitdefender GravityZone
+*  Synopsis: Deploy Bitdefender GravityZone
 *  Description:
 
     > Uses parameter string to pass filename with square brackets
@@ -17,15 +17,17 @@ $Info = {
     > Runs app installer with arguments defined
     > Deletes temporary folder after installation is complete
 
-*  Created: 23-06-01 by Tawtek
-*  Updated: 23-06-26 by Tawtek
+*  Created: 23-06-01 by TawTek
+*  Updated: 23-06-26 by TawTek
 *  Version: 3.0
-*  Log
+*  Changelog:
 
     > 23-06-04  Added Test-Path for temp directory
     > 23-06-24  Added if/else for PowerShell version to execute correct cmdlet to download app installer
     > 23-06-26  Added function Confirm-Service to check if BDGZ or S1 service is installed and terminate if true
                 Added function Confirm-AppInstall to check if BDGZ service exists after attempted install
+                
+* GitHub: https://github.com/TawTek
 *************************************************************************************************************************
 }
 $VerbosePreference = "Continue"
