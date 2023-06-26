@@ -1,7 +1,7 @@
 #---Variables [General]
 $Info = {
 *************************************************************************************************************************
-*  Synopsis: Template to download and install application
+*  Synopsis: Script template to download and install application
 *  Description:
 
     > Checks for temporary directory and if missing, creates one in C:\Temp
