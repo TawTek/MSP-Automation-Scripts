@@ -5,10 +5,10 @@ param(
 #---Variables [General]
 $Info = {
 <*************************************************************************************************************************
-*  Synopsis: Deploy Bitdefender GravityZone
+*  Synopsis: Install Bitdefender GravityZone
 *  Description:
 
-    > Uses parameter string to pass filename with square brackets (define parameter in Ninja)
+    > Uses parameter string to pass filename with square brackets
     > Checks for temporary directory and if missing, creates one in C:\Temp
     > Adds regkey to disable IE first run setup (prevents downloads if it was never run before)
     > Checks PowerShell version and executes correct cmdlet for downloading app installer
@@ -17,8 +17,8 @@ $Info = {
     > Runs app installer with arguments defined
     > Deletes temporary folder after installation is complete
 
-*  Created: 23-06-01 by Tawhid Chowdhury [NOC Manager]
-*  Updated: 23-06-26 by Tawhid Chowdhury [NOC Manager]
+*  Created: 23-06-01 by Tawtek
+*  Updated: 23-06-26 by Tawtek
 *  Version: 3.0
 *  Log
 
