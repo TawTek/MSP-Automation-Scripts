@@ -4,9 +4,9 @@ param(
 )
 #---Variables [General]
 $Info = {
-<*************************************************************************************************************************
-*  Synopsis: Deploy Bitdefender GravityZone
-*  Description:
+    -------------------------------------------------------------------------------------------------------------------
+*  SYNOPSIS: Deploy Bitdefender GravityZone
+*  DESCRIPTION:
 
     > Uses parameter string to pass filename with square brackets
     > Checks for temporary directory and if missing, creates one in C:\Temp
@@ -17,18 +17,20 @@ $Info = {
     > Runs app installer with arguments defined
     > Deletes temporary folder after installation is complete
 
-*  Created: 23-06-01 by TawTek
-*  Updated: 23-06-26 by TawTek
-*  Version: 3.0
-*  Changelog:
+*  CREATED: 23-06-01 | TawTek
+*  UPDATED: 23-07-03 | TawTek
+*  VERSION: 4.0
+
+*  CHANGELOG:
 
     > 23-06-04  Added Test-Path for temp directory
     > 23-06-24  Added if/else for PowerShell version to execute correct cmdlet to download app installer
     > 23-06-26  Added function Confirm-Service to check if BDGZ or S1 service is installed and terminate if true
                 Added function Confirm-AppInstall to check if BDGZ service exists after attempted install
+    > 23-07-03  Added Test-Path for checking if installer already exists and rearranged functions order
                 
-* GitHub: https://github.com/TawTek
-*************************************************************************************************************************
+* GITHUB: https://github.com/TawTek
+-------------------------------------------------------------------------------------------------------------------
 }
 $VerbosePreference = "Continue"
 $TempDirectory = "C:\Temp\BDGZ"
@@ -65,7 +67,7 @@ function Confirm-Service {
 }
 
 ###---Creates temporary directory---###
-function Set-TempPath {
+function Confirm-TempPath {
     Write-Verbose "Checking if $TempDirectory exists."
     if(Test-Path -Path $TempDirectory) {
         Write-Verbose "$TempDirectory exists."
@@ -76,8 +78,21 @@ function Set-TempPath {
     }
 }
 
+###---Checks if installer exists---###
+function Confirm-Installer {
+    Write-Verbose "Checking if $App installer already exists."
+    if (Test-Path -Path $RenamedFilePath) {
+        Write-Verbose "$App installer exists, skipping download"
+        Write-Verbose "Installing $App."
+        Start-Process -FilePath $RenamedFilePath -ArgumentList $Arg -wait
+    } else {
+        Write-Verbose "$App installer does not exist, continuing to download installer."
+        Add-App
+    }
+}
+
 ###---Downloads and Installs BDGZ---###
-function Install-App {
+function Add-App {
     Write-Verbose "Downloading $App installer to $TempDirectory."
     Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Internet Explorer\Main" -Name "DisableFirstRunCustomize" -Value 2
     if($PowerShellVersion -lt "3.0") {
@@ -98,21 +113,16 @@ function Install-App {
 function Confirm-AppInstall {
     if (Get-Service $ServiceName_BDGZ -ErrorAction SilentlyContinue) {
         Write-Verbose "$ServiceName_BDGZ exists, $App has been installed."
-        Remove-TempPath
+        Write-Verbose "Deleting temporary directory folder."
+        Remove-Item $TempDirectory -recurse -force
+        Write-Verbose "Temporary directory has been deleted."
     } else {
         Write-Verbose "$App has not been installed due to an error. Please attempt manual installation."
     }
 }
 
-###---Removes temporary directory---###
-function Remove-TempPath {
-    Write-Verbose "Deleting temporary directory folder."
-    Remove-Item $TempDirectory -recurse -force
-    Write-Verbose "Temporary directory has been deleted."
-}
-
 Write-Info
 Confirm-Service
-Set-TempPath
-Install-App
+Confirm-TempPath
+Confirm-Installer
 Confirm-AppInstall
