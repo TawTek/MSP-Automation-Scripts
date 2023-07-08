@@ -9,8 +9,9 @@ param (
 	[switch]$ShowError
 )
 $Info = {
---------------------------------------------------------------------------------------------------------------------------
-Ninja Uninstall Script with support for reamoving TeamViewer if '-DelTeamViewer' parameter is used to be deleted:
+**********************************************************************************************************
+Ninja Uninstall Script with support for reamoving TeamViewer if '-DelTeamViewer' parameter is used to be 
+deleted:
 
 Usage: 
     > [-Uninstall]
@@ -26,12 +27,13 @@ NewAgentRemoval.ps1 -Uninstall
 disables uninstall prevention and uninstalls using msiexec, does not check if there are any leftovers
 
 NewAgentRemoval.ps1 -Cleanup
-removes keys, files, services related to NinjaRMMProduct, does not use amy msiexec, uninstall prevention status is ignored
+removes keys, files, services related to NinjaRMMProduct, does not use amy msiexec, uninstall prevention
+status is ignored
 
 NewAgentRemoval.ps1  -Uninstall -Cleanup
 combines two actions together
 order of arguments does not matter, msiexec is called first, cleanup goes second
---------------------------------------------------------------------------------------------------------------------------
+**********************************************************************************************************
 }
 $ErrorActionPreference = 'SilentlyContinue'
 
