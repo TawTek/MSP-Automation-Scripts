@@ -25,7 +25,7 @@ CHANGELOG
     > 23-08-18  Added logic for adding regkeys to bypass OOBE + Privacy Experience
                 Reformatted comments
 ------------------------------------------------------------------------------------------------------------
-GITHUB - https://github.com/DedicatedIT/DIT---Dedicated-IT
+GITHUB - https://github.com/TawTek/MSP-Automation-Scripts/blob/main/Add-NewLocalUser.ps1
 ----------------------------------------------------------------------------------------------------------#>
 
 #-Parameters
