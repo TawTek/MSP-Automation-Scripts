@@ -1,11 +1,11 @@
 <#----------------------------------------------------------------------------------------------------------
-DEVELOPMENT
+<DEVELOPMENT>
 ------------------------------------------------------------------------------------------------------------
     > CREATED: 23-07-22 | TawTek
     > UPDATED: 23-08-18 | TawTek
     > VERSION: 4.0
 ------------------------------------------------------------------------------------------------------------
-SYNOPSIS+DESCRIPTION - Create new local user account
+<DESCRIPTION> Create new local user account
 ------------------------------------------------------------------------------------------------------------
     > Specify parameters for new user account
     > Checks if user account already exists, terminates script if found
@@ -13,7 +13,7 @@ SYNOPSIS+DESCRIPTION - Create new local user account
     > Adds registry keys to disable OOBE + Privacy Experience (speeds up first login drastically)
     > Checks if local Administrator is disabled, disables if not (if parameter defined)
 ------------------------------------------------------------------------------------------------------------
-CHANGELOG
+<CHANGELOG>
 ------------------------------------------------------------------------------------------------------------
     > 23-07-22  Developed first iteration of script
     > 23-08-05  Added check for local Administrator account and disable if active
@@ -25,7 +25,7 @@ CHANGELOG
     > 23-08-18  Added logic for adding regkeys to bypass OOBE + Privacy Experience
                 Reformatted comments
 ------------------------------------------------------------------------------------------------------------
-GITHUB - https://github.com/TawTek/MSP-Automation-Scripts
+<GITHUB> https://github.com/TawTek/MSP-Automation-Scripts
 ----------------------------------------------------------------------------------------------------------#>
 
 #-Parameters
