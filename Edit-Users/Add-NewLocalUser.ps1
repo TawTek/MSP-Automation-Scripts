@@ -47,6 +47,7 @@ $CheckUser         = Get-LocalUser -Name $NewUser @EA_Silent
 SCRIPT:FUNCTIONS
 ------------------------------------------------------------------------------------------------------------#>
 
+##--Checks if all parameters are defined and whether $NewUser exists
 function Test-User {
     if ($NewUser -and $Group -and $Password) {
         Write-Verbose "Checking if $NewUser exists."
@@ -62,7 +63,7 @@ function Test-User {
     }
 }
 
-##--Checks if all parameters are defined and whether $NewUser exists and creates if not
+##--Creates new user
 function New-User {
     $NewUserParams = @{
         'AccountNeverExpires'  = $true;
@@ -74,7 +75,7 @@ function New-User {
     Write-Verbose "$NewUser account has been created according to defined parameters"
 }
 
-##--Modify RegKey to bypass OOBE + Privacy Experience
+##--Modifies RegKey to bypass OOBE + Privacy Experience
 function Set-RegKey {
     if ($OOBEbypass -eq $True) {
         Write-Verbose "Modifying registry to prevent OOBE and Privacy Expereience upon first login."
@@ -129,7 +130,7 @@ function Set-RegKey {
 function Test-Administrator {
     if ($AdministratorDisabled -eq $True) {
         Write-Verbose "Checking if local Administrator account is disabled."
-        if ((get-localuser 'Administrator').enabled) {
+        if ((Get-LocalUser 'Administrator').enabled) {
             Disable-LocalUser 'Administrator'
             Write-Verbose "Local Administrator account has been disabled."
         } else {
