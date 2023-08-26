@@ -28,17 +28,17 @@ VERSION: 2.0
 
 #-Variables [Global]
 $VerbosePreference = "Continue"
-$EA_Silent = @{ErrorAction = "SilentlyContinue"}
-$EA_Stop = @{ErrorAction = "Stop"}
-$TempDir = "C:\Temp\MSEdgeView2"
-$PSVer = $PSVersionTable.PSVersion
+$EA_Silent         = @{ErrorAction = "SilentlyContinue"}
+$EA_Stop           = @{ErrorAction = "Stop"}
+$TempDir           = "C:\Temp\MSEdgeView2"
+$PSVer             = $PSVersionTable.PSVersion
 
 #-Variables [App]
-$App = "Microsoft Edge WebView2 Runtime"
-$DownloadURL = "https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/69fd90fb-8382-4294-8f45-b97c88717998/MicrosoftEdgeWebView2RuntimeInstallerX64.exe"
-$Installer = "MicrosoftEdgeWebView2RuntimeInstallerX64.exe"
+$App          = "Microsoft Edge WebView2 Runtime"
+$DownloadURL  = "https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/69fd90fb-8382-4294-8f45-b97c88717998/MicrosoftEdgeWebView2RuntimeInstallerX64.exe"
+$Installer    = "MicrosoftEdgeWebView2RuntimeInstallerX64.exe"
 $TempFilePath = Join-Path -Path $TempDir -ChildPath $Installer
-$Arg = "/silent /install"
+$Arg          = "/silent /install"
 
 <#------------------------------------------------------------------------------------------------------------
 SCRIPT:FUNCTIONS
