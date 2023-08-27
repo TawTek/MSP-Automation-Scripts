@@ -1,8 +1,8 @@
 <#----------------------------------------------------------------------------------------------------------
 <DEVELOPMENT>
 ------------------------------------------------------------------------------------------------------------
-    > Created: 23-06-06 | Tawhid Chowdhury [NOC Manager]
-    > Updated: 23-08-26 | Tawhid Chowdhury [NOC Manager]
+    > Created: 23-06-06 | TawTek
+    > Updated: 23-08-26 | TawTek
     > Version: 3.0
 ------------------------------------------------------------------------------------------------------------
 <DESCRIPTION> Removes local user account from account databse, profile directory, and registry keys
