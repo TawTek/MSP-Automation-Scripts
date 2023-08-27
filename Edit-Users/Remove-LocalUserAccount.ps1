@@ -29,7 +29,6 @@ param(
 #-Variables
 $VerbosePreference = "Continue"
 $EA_Silent         = @{ErrorAction = "SilentlyContinue"}
-$EA_Stop           = @{ErrorAction = "Stop"}
 $User              = Get-LocalUser -Name $Username @EA_Silent
 
 <#------------------------------------------------------------------------------------------------------------
@@ -57,7 +56,7 @@ function Remove-User {
     Write-Verbose "Removing user account from account database."
     Remove-LocalUser -SID $User.SID
     Write-Verbose "Removing user account profile directory and associated registry keys."
-    Get-CimInstance -Class Win32_UserProfile | ? SID -eq $User.SID | Remove-CimInstance
+    Get-CimInstance -Class Win32_UserProfile | Where-Object SID -eq $User.SID | Remove-CimInstance
     Write-Verbose "The user account $Username has been deleted."
 }
 
