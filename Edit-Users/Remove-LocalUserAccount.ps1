@@ -1,31 +1,69 @@
-###Parameters
+<#----------------------------------------------------------------------------------------------------------
+<DEVELOPMENT>
+------------------------------------------------------------------------------------------------------------
+    > Created: 23-06-06 | Tawhid Chowdhury [NOC Manager]
+    > Updated: 23-08-26 | Tawhid Chowdhury [NOC Manager]
+    > Version: 3.0
+------------------------------------------------------------------------------------------------------------
+<DESCRIPTION> Removes local user account from account databse, profile directory, and registry keys
+------------------------------------------------------------------------------------------------------------
+    > Specify username in parameters
+    > Checks if user account exists, terminates if not
+    > If user account exists, will remove it from account database, profile directory, and registry
+------------------------------------------------------------------------------------------------------------
+<CHANGELOG>
+------------------------------------------------------------------------------------------------------------
+    > 23-06-06  Developed first iteration of script
+    > 23-07-26  Added if/else to check if user account exists to have cleaner error handling
+                Cleaned up script formatting and descriptions
+    > 23-08-26  Revised script formatting to new standardization
+------------------------------------------------------------------------------------------------------------
+<GITHUB>
+----------------------------------------------------------------------------------------------------------#>
+
+#-Parameters
 param(
-    [string]$Name=''
+    [string] $Username
 )
 
-###Variables
-$Info = {
-*************************************************************************************************************************
-* Synopsis: Script to remove local user account
-* Description:
+#-Variables
+$VerbosePreference = "Continue"
+$EA_Silent = @{ErrorAction = "SilentlyContinue"}
+$EA_Stop   = @{ErrorAction = "Stop"}
+$User = Get-LocalUser -Name $Username @EA_Silent
 
-    >Removes local user account which is specified in the Ninja Script Parameter. It will remove it from the 
-     account database as well as any associated registry keys
+<#------------------------------------------------------------------------------------------------------------
+SCRIPT:FUNCTIONS
+------------------------------------------------------------------------------------------------------------#>
 
-*  Created: 23-06-06 by TawTek
-*  Updated: 23-06-06 by TawtTek
-*  Version: 1.0
-*************************************************************************************************************************
+##--Checks if user account exists
+function Test-User {
+    if ($Username) {
+        Write-Verbose "Checking if $Username exists."
+        if (-not $User) {
+            Write-Verbose "$Username does not exist. Terminating script."
+            exit
+        } else {
+            Write-Verbose "$Username exists, removing account."
+        }
+    } else {
+        Write-Verbose "No Username defined. Input Username in parameter field and rerun script."
+        exit
+    }
 }
-$User = Get-LocalUser -Name $Name -ErrorAction stop
 
-function Remove-LocalUserAccount {
-    Write-Host $Info
-    # Remove the user from the account database
+##--Removes account from database, profile directory, and associated registry keys
+function Remove-User {
+    Write-Verbose "Removing user account from account database."
     Remove-LocalUser -SID $User.SID
-    # Remove the profile of the user (both, profile directory and profile in the registry)
+    Write-Verbose "Removing user account profile directory and associated registry keys."
     Get-CimInstance -Class Win32_UserProfile | ? SID -eq $User.SID | Remove-CimInstance
-    Write-Host "The user account $Name has been removed along with corresponding registry keys"
+    Write-Verbose "The user account $Username has been deleted."
 }
 
-Remove-LocalUserAccount
+<#------------------------------------------------------------------------------------------------------------
+SCRIPT:EXECUTIONS
+------------------------------------------------------------------------------------------------------------#>
+
+Test-User
+Remove-User
