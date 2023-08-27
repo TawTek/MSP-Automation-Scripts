@@ -1,9 +1,9 @@
 <#----------------------------------------------------------------------------------------------------------
 <DEVELOPMENT>
 ------------------------------------------------------------------------------------------------------------
-    > Created: 23-06-06 | TawTek
-    > Updated: 23-08-26 | TawTek
-    > Version: 3.0
+    > CREATED: 23-06-06 | TawTek
+    > UPDATED: 23-08-26 | TawTek
+    > VERSION: 3.0
 ------------------------------------------------------------------------------------------------------------
 <DESCRIPTION> Removes local user account from account databse, profile directory, and registry keys
 ------------------------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@
                 Cleaned up script formatting and descriptions
     > 23-08-26  Revised script formatting to new standardization
 ------------------------------------------------------------------------------------------------------------
-<GITHUB>
+<GITHUB> https://github.com/TawTek/MSP-Automation-Scripts
 ----------------------------------------------------------------------------------------------------------#>
 
 #-Parameters
@@ -28,9 +28,9 @@ param(
 
 #-Variables
 $VerbosePreference = "Continue"
-$EA_Silent = @{ErrorAction = "SilentlyContinue"}
-$EA_Stop   = @{ErrorAction = "Stop"}
-$User = Get-LocalUser -Name $Username @EA_Silent
+$EA_Silent         = @{ErrorAction = "SilentlyContinue"}
+$EA_Stop           = @{ErrorAction = "Stop"}
+$User              = Get-LocalUser -Name $Username @EA_Silent
 
 <#------------------------------------------------------------------------------------------------------------
 SCRIPT:FUNCTIONS
