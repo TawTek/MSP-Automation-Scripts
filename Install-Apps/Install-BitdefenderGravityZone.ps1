@@ -40,7 +40,7 @@ $TempDirectory = "C:\Temp\BDGZ"
 $PowerShellVersion = $PSVersionTable.PSVersion
 #---Varilables [App Specific]
 $App = "Bitdefender GravityZone"
-$DownloadApp = "https://cloud.gravityzone.bitdefender.com/Packages/BSTWIN/0/$SetupDownloader"
+$DownloadApp = "$SetupDownloader"
 $TempFileName = "bdgz_temp.exe"
 $TempFilePath = Join-Path -Path $TempDirectory -ChildPath $TempFileName
 $RenamedFilePath = Join-Path -Path $TempDirectory -ChildPath $SetupDownloader
