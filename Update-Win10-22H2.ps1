@@ -20,6 +20,9 @@
     > 23-01-16  Changed logic to determine KB installed by using Get-HotFix
     > 23-01-17  Added function Test-Version and SSU dependencies download logic
     > 23-01-29  Added error handing exit codes and output to console
+    > 23-02-03  Updated CU variables to KB5034203 2024-01 Cumulative Update Preview for Windows 10 Ver 22H2
+                Fixed Process.ExitCode logic with elseif for correct output to console
+                Added Process.ExitCode -2145124329 warning
 -------------------------------------------------------------------------------------------------------------
 <GITHUB>
 -----------------------------------------------------------------------------------------------------------#>
@@ -34,14 +37,14 @@ $OSVersion         = if ($Release -eq '2009') {$Ver} else {$Release}
 
 #-Variables [Updates]
 $DOTNET            = "KB5033909"
-$CU                = "KB5034122"
+$CU                = "KB5034203"
 $FU                = "KB5015684"
 $SSU_2004          = "KB5005260"
 $SSU_20H2          = "KB5014032"
 $SSU_21H1          = "KB5014032"
 $SSU_21H2          = "KB5031539"
 $URL_DOTNET        = "https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/secu/2023/12/windows10.0-kb5033909-x64-ndp48_ae6d65030ae80a9661685579932305f66be1907a.msu"
-$URL_CU            = "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/secu/2024/01/windows10.0-kb5034122-x64_de14dfac8817c1d0765b899125c63dc7b581958b.msu"
+$URL_CU            = "https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/updt/2024/01/windows10.0-kb5034203-x64_14f2cba156944cea66379d78c305f5aa5a6517e7.msu"
 $URL_FU            = "https://catalog.s.download.windowsupdate.com/c/upgr/2022/07/windows10.0-kb5015684-x64_523c039b86ca98f2d818c4e6706e2cc94b634c4a.msu"
 $URL_SSU_2004      = "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/secu/2021/08/ssu-19041.1161-x64_e7e052f5cbe97d708ee5f56a8b575262d02cfaa4.msu"
 $URL_SSU_20H2      = "https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/secu/2022/05/ssu-19041.1704-x64_70e350118b85fdae082ab7fde8165a947341ba1a.msu"
@@ -100,6 +103,9 @@ function Test-KB {
     if (Get-HotFix -ID $FU @EA_Silent) {
         $script:FU_Installed = $true
         Write-Verbose "Feature Update $FU is installed"
+    } elseif ($OSVersion -eq "22H2") {
+        $script:FU_Installed = $true
+        Write-Verbose "Feature Update $FU is not needed since device is on $OSVersion"
     } else {
         $script:FU_Installed = $false
         Write-Verbose "Feature Update $FU is not installed"
@@ -228,18 +234,17 @@ function Get-SSU {
                 }
             } catch {
                 if ($process.ExitCode -eq 1058) {
-                    Write-Warning "Windows Update Service cannot be started. Check status of WUAUSERV service, if it cannot run then will need to reset windows update components."
-                }
-                if ($process.ExitCode -eq 1641) {
+                    Write-Warning "WUAUSERV cannot be started. Try to start WUAUSERV service, if it cannot run then will need to reset Windows Update Components."
+                } elseif ($process.ExitCode -eq 1641) {
                     Write-Warning "System will now reboot."
-                } 
-                if ($process.ExitCode -eq 2359302) {
+                } elseif ($process.ExitCode -eq 2359302) {
                     Write-Warning "Update is already installed, skipping."
+                } elseif ($process.ExitCode -eq -2145124329) {
+                    Write-Warning "Update is not applicable for this device, skipping."
                 } else {
                     Write-Warning "An error occurred: $_"
                 }
             }
-            exit
         }
     }
 }
@@ -269,13 +274,13 @@ function Get-FU {
             }
         } catch {
             if ($process.ExitCode -eq 1058) {
-                Write-Warning "Windows Update Service cannot be started. Check status of WUAUSERV service, if it cannot run then will need to reset windows update components."
-            }
-            if ($process.ExitCode -eq 1641) {
+                Write-Warning "WUAUSERV cannot be started. Try to start WUAUSERV service, if it cannot run then will need to reset Windows Update Components."
+            } elseif ($process.ExitCode -eq 1641) {
                 Write-Warning "System will now reboot."
-            } 
-            if ($process.ExitCode -eq 2359302) {
+            } elseif ($process.ExitCode -eq 2359302) {
                 Write-Warning "Update is already installed, skipping."
+            } elseif ($process.ExitCode -eq -2145124329) {
+                Write-Warning "Update is not applicable for this device, skipping."
             } else {
                 Write-Warning "An error occurred: $_"
             }
@@ -309,13 +314,13 @@ function Get-CU {
             }
         } catch {
             if ($process.ExitCode -eq 1058) {
-                Write-Warning "Windows Update Service cannot be started. Check status of WUAUSERV service, if it cannot run then will need to reset windows update components."
-            }
-            if ($process.ExitCode -eq 1641) {
+                Write-Warning "WUAUSERV cannot be started. Try to start WUAUSERV service, if it cannot run then will need to reset Windows Update Components."
+            } elseif ($process.ExitCode -eq 1641) {
                 Write-Warning "System will now reboot."
-            } 
-            if ($process.ExitCode -eq 2359302) {
+            } elseif ($process.ExitCode -eq 2359302) {
                 Write-Warning "Update is already installed, skipping."
+            } elseif ($process.ExitCode -eq -2145124329) {
+                Write-Warning "Update is not applicable for this device, skipping."
             } else {
                 Write-Warning "An error occurred: $_"
             }
@@ -349,13 +354,13 @@ function Get-DOTNET {
             }
         } catch {
             if ($process.ExitCode -eq 1058) {
-                Write-Warning "Windows Update Service cannot be started. Check status of WUAUSERV service, if it cannot run then will need to reset windows update components."
-            }
-            if ($process.ExitCode -eq 1641) {
+                Write-Warning "WUAUSERV cannot be started. Try to start WUAUSERV service, if it cannot run then will need to reset Windows Update Components."
+            } elseif ($process.ExitCode -eq 1641) {
                 Write-Warning "System will now reboot."
-            } 
-            if ($process.ExitCode -eq 2359302) {
+            } elseif ($process.ExitCode -eq 2359302) {
                 Write-Warning "Update is already installed, skipping."
+            } elseif ($process.ExitCode -eq -2145124329) {
+                Write-Warning "Update is not applicable for this device, skipping."
             } else {
                 Write-Warning "An error occurred: $_"
             }
